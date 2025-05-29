@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.venv/
+env/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+volumes/
+
+# Django
+*.log
+*.sqlite3
+/media/
+/static_root/
+.env

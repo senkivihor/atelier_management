@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "atelier-management"
+version = "0.1.0"
+description = "Web application for atelier administrative needs."
+authors = ["Ihor <igor060690@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^5.0"
+psycopg2-binary = "^2.9" # PostgreSQL adapter
+python-dotenv = "^1.0" # For local environment variables
+django-environ = "^0.11.2" # Excellent for managing env vars in Django
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.20"
+django-debug-toolbar = "^4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
