@@ -1,1 +1,1 @@
-# atelier_management
+# Atelier Management System
