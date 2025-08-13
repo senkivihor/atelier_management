@@ -85,9 +85,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Third-party apps
-    # Your apps will go here
     'clients',
     'tasks',
-    # ... any other apps you create
+    'users',
 ]
