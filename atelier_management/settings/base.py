@@ -88,5 +88,6 @@ INSTALLED_APPS = [
     # Third-party apps
     # Your apps will go here
     'clients',
+    'tasks',
     # ... any other apps you create
 ]
