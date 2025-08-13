@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ client.get_full_name }}{% endblock %}
+
+{% block content %}
+    <hgroup>
+        <h1>{{ client.get_full_name }}</h1>
+        <h2>Client Details</h2>
+    </hgroup>
+
+    <p><strong>Email:</strong> {{ client.email|default:"N/A" }}</p>
+    <p><strong>Phone:</strong> {{ client.phone_number|default:"N/A" }}</p>
+    <p><strong>Address:</strong> {{ client.address|linebreaksbr|default:"N/A" }}</p>
+    <p><strong>Notes:</strong> {{ client.notes|linebreaksbr|default:"N/A" }}</p>
+    <p><strong>Joined:</strong> {{ client.created_at|date:"M d, Y" }}</p>
+
+    <a href="{% url 'client_list' %}" role="button" class="secondary">Back to Clients</a>
+    <a href="#" role="button" hx-get="{% url 'client_update' client.pk %}" hx-target="#dialog-container" hx-swap="outerHTML" hx-on--after-request="document.querySelector('#update-client-modal-{{ client.pk }}').showModal()">Edit Client</a>
+
+    <h3>Associated Tasks</h3>
+    {% if tasks %}
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></td>
+                        <td>{{ task.get_status_display }}</td>
+                        <td class="{% if task.is_overdue %}is-overdue{% elif task.is_due_soon %}is-due-soon{% endif %}">
+                            {% if task.deadline %}{{ task.deadline|date:"M d, Y" }}{% else %}No deadline{% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'task_detail' task.pk %}">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tasks found for this client.</p>
+    {% endif %}
+
+    <div id="dialog-container"></div>
+{% endblock %}

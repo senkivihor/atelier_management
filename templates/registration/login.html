@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <article class="grid">
+        <div>
+            <hgroup>
+                <h1>Sign in</h1>
+                <h2>Welcome to Atelier Manager</h2>
+            </hgroup>
+            <form method="post">
+                {% csrf_token %}
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" required>
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" required>
+                {% if form.errors %}
+                    <small style="color: var(--pico-del-color);">Your username and password didn't match. Please try again.</small>
+                {% endif %}
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div></div>
+    </article>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% load static %}
+{% comment %} This partial is swapped into the #client-table-body on new client creation {% endcomment %}
+{% for client in clients %}
+    {% include 'clients/partials/client_row.html' %}
+{% empty %}
+    <tr><td colspan="4">No clients found.</td></tr>
+{% endfor %}

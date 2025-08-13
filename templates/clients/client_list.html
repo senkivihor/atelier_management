@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block content %}
+    <hgroup>
+        <h1>Clients</h1>
+        <h2>Manage your atelier's clients.</h2>
+    </hgroup>
+
+    <a href="#" role="button" class="secondary" hx-get="{% url 'client_create' %}" hx-target="#dialog-container" hx-swap="outerHTML" hx-on--after-request="document.querySelector('#create-client-modal').showModal()">Add New Client (HTMX Example)</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td><a href="{% url 'client_detail' client.pk %}">{{ client.get_full_name }}</a></td>
+                    <td>{{ client.email|default:"N/A" }}</td>
+                    <td>{{ client.phone_number|default:"N/A" }}</td>
+                    <td>
+                        <a href="#" hx-get="{% url 'client_update' client.pk %}" hx-target="#dialog-container" hx-swap="outerHTML" hx-on--after-request="document.querySelector('#update-client-modal-{{ client.pk }}').showModal()">Edit</a> |
+                        <a href="#" hx-post="{% url 'client_delete' client.pk %}" hx-confirm="Are you sure you want to delete {{ client.get_full_name }}?" hx-target="closest tr" hx-swap="outerHTML swap:.5s" hx-trigger="click" _="on htmx:afterRequest if event.detail.xhr.status == 204 settle then alert('Client deleted successfully.') else alert('Error deleting client.')">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No clients found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="dialog-container"></div>
+{% endblock %}

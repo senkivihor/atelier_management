@@ -1,0 +1,29 @@
+<dialog id="{{ 'create-client-modal' if is_create else 'update-client-modal-'|add:client.pk }}">
+    <article>
+        <header>
+            <a href="#close" aria-label="Close" class="close" data-target="dialog-container"
+               hx-get="{% url 'client_list' %}" hx-swap="innerHTML" hx-target="body"></a>
+            <h3>{{ 'Create New Client' if is_create else 'Edit Client' }}</h3>
+        </header>
+        <form method="post"
+              {% if is_create %}hx-post="{% url 'client_create' %}"{% else %}hx-post="{% url 'client_update' client.pk %}"{% endif %}
+              hx-target="#client-table-body"
+              hx-swap="outerHTML"
+              hx-on--after-request="if (event.detail.xhr.status >= 200 && event.detail.xhr.status < 300) { document.getElementById('{{ 'create-client-modal' if is_create else 'update-client-modal-'|add:client.pk }}').close(); }"
+              hx-sync="this:replace"> {# replace current form content on success/error #}
+            {% csrf_token %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small>{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <small style="color: var(--pico-del-color);">{{ error }}</small>
+                {% endfor %}
+            {% endfor %}
+            <small style="color: var(--pico-del-color);">{% for error in form.non_field_errors %}{{ error }}{% endfor %}</small>
+            <button type="submit">{{ 'Create Client' if is_create else 'Update Client' }}</button>
+        </form>
+    </article>
+</dialog>

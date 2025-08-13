@@ -1,0 +1,7 @@
+{% load static %}
+{% comment %} This partial is swapped into the #task-list-table-body on list updates {% endcomment %}
+{% for task in tasks %}
+    {% include 'tasks/partials/task_row.html' %}
+{% empty %}
+    <tr><td colspan="5">No tasks found.</td></tr>
+{% endfor %}

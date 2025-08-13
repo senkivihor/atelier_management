@@ -1,0 +1,14 @@
+{% comment %} This partial is swapped into the specific TR on task update {% endcomment %}
+<tr id="task-row-{{ task.pk }}">
+    <td><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></td>
+    <td><a href="{% url 'client_detail' task.client.pk %}">{{ task.client.get_full_name }}</a></td>
+    <td>{{ task.get_status_display }}</td>
+    <td class="{% if task.is_overdue %}is-overdue{% elif task.is_due_soon %}is-due-soon{% endif %}">
+        {% if task.deadline %}{{ task.deadline|date:"M d, Y" }}{% else %}No deadline{% endif %}
+    </td>
+    <td>
+        <a href="{% url 'task_detail' task.pk %}">View</a> |
+        <a href="#" hx-get="{% url 'task_update' task.pk %}" hx-target="#dialog-container" hx-swap="outerHTML" hx-on--after-request="document.querySelector('#update-task-modal-{{ task.pk }}').showModal()">Edit</a> |
+        <a href="#" hx-post="{% url 'task_delete' task.pk %}" hx-confirm="Are you sure you want to delete '{{ task.title }}'?" hx-target="closest tr" hx-swap="outerHTML swap:.5s" hx-trigger="click" _="on htmx:afterRequest if event.detail.xhr.status == 204 settle then alert('Task deleted successfully.') else alert('Error deleting task.')">Delete</a>
+    </td>
+</tr>

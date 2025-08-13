@@ -1,0 +1,10 @@
+{% comment %} This partial is swapped into the specific TR on client update {% endcomment %}
+<tr id="client-row-{{ client.pk }}">
+    <td><a href="{% url 'client_detail' client.pk %}">{{ client.get_full_name }}</a></td>
+    <td>{{ client.email|default:"N/A" }}</td>
+    <td>{{ client.phone_number|default:"N/A" }}</td>
+    <td>
+        <a href="#" hx-get="{% url 'client_update' client.pk %}" hx-target="#dialog-container" hx-swap="outerHTML" hx-on--after-request="document.querySelector('#update-client-modal-{{ client.pk }}').showModal()">Edit</a> |
+        <a href="#" hx-post="{% url 'client_delete' client.pk %}" hx-confirm="Are you sure you want to delete {{ client.get_full_name }}?" hx-target="closest tr" hx-swap="outerHTML swap:.5s" hx-trigger="click" _="on htmx:afterRequest if event.detail.xhr.status == 204 settle then alert('Client deleted successfully.') else alert('Error deleting client.')">Delete</a>
+    </td>
+</tr>
