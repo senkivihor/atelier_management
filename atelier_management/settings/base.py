@@ -88,4 +88,18 @@ INSTALLED_APPS = [
     'clients',
     'tasks',
     'users',
+    'channels',
 ]
+
+# ... (below WSGI_APPLICATION) ...
+ASGI_APPLICATION = 'atelier_management.asgi.application'
+
+# Channels settings
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)], # 'redis' is the service name in docker-compose
+        },
+    },
+}
