@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <hgroup>
+        <h1>Atelier Dashboard</h1>
+        <h2>Quick overview of your atelier's performance.</h2>
+    </hgroup>
+
+    <div class="grid" id="dashboard-metrics-container">
+        {% include 'users/partials/dashboard_metrics.html' %}
+    </div>
+
+    <section>
+        <h2>Overdue Tasks</h2>
+        {% include 'tasks/partials/task_list_compact.html' with tasks=overdue_tasks %}
+    </section>
+
+    <section>
+        <h2>Tasks Due Soon (within 3 days)</h2>
+        {% include 'tasks/partials/task_list_compact.html' with tasks=due_soon_tasks %}
+    </section>
+
+    <section>
+        <h2>Tasks In Progress</h2>
+        {% include 'tasks/partials/task_list_compact.html' with tasks=in_progress_tasks %}
+    </section>
+
+    <section>
+        <h2>Pending Tasks</h2>
+        {% include 'tasks/partials/task_list_compact.html' with tasks=pending_tasks %}
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if ("WebSocket" in window) {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const ws = new WebSocket(
+                    protocol + '//' + window.location.host + '/ws/dashboard/'
+                );
+
+                ws.onopen = function() {
+                    console.log("WebSocket connection opened.");
+                };
+
+                ws.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'dashboard_metrics') {
+                        const metrics = data.data;
+                        document.getElementById('overdue_count').textContent = metrics.overdue_count;
+                        document.getElementById('due_soon_count').textContent = metrics.due_soon_count;
+                        document.getElementById('in_progress_count').textContent = metrics.in_progress_count;
+                        document.getElementById('pending_count').textContent = metrics.pending_count;
+                        document.getElementById('completed_this_month_count').textContent = metrics.completed_this_month_count;
+                        // Optionally, trigger an HTMX request to reload task lists if needed
+                        // htmx.trigger(document.getElementById('overdue-tasks-section'), 'refresh');
+                    }
+                };
+
+                ws.onclose = function() {
+                    console.log("WebSocket connection closed.");
+                };
+
+                ws.onerror = function(error) {
+                    console.error("WebSocket error:", error);
+                };
+            } else {
+                console.warn("WebSocket not supported by your browser.");
+            }
+        });
+    </script>
+{% endblock %}

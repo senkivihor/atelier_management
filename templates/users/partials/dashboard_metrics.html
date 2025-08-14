@@ -1,0 +1,35 @@
+<article>
+    <hgroup>
+        <h3>Overdue Tasks</h3>
+        <h2 id="overdue_count">{{ overdue_tasks.count }}</h2>
+    </hgroup>
+    <a href="{% url 'task_list' %}?status=pending">View all</a>
+</article>
+<article>
+    <hgroup>
+        <h3>Due Soon</h3>
+        <h2 id="due_soon_count">{{ due_soon_tasks.count }}</h2>
+    </hgroup>
+    <a href="{% url 'task_list' %}?status=in_progress">View all</a>
+</article>
+<article>
+    <hgroup>
+        <h3>In Progress</h3>
+        <h2 id="in_progress_count">{{ in_progress_tasks.count }}</h2>
+    </hgroup>
+    <a href="{% url 'task_list' %}?status=in_progress">View all</a>
+</article>
+<article>
+    <hgroup>
+        <h3>Pending Tasks</h3>
+        <h2 id="pending_count">{{ pending_tasks.count }}</h2>
+    </hgroup>
+    <a href="{% url 'task_list' %}?status=pending">View all</a>
+</article>
+<article>
+    <hgroup>
+        <h3>Completed This Month</h3>
+        <h2 id="completed_this_month_count">{{ completed_this_month_count }}</h2>
+    </hgroup>
+    <a href="{% url 'task_list' %}?status=completed">View all</a>
+</article>

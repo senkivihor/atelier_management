@@ -1,0 +1,17 @@
+{% comment %} A compact list for use in the dashboard {% endcomment %}
+{% if tasks %}
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <a href="{% url 'task_detail' task.pk %}">
+                    {{ task.title }} for {{ task.client.get_full_name }}
+                </a>
+                (<span class="{% if task.is_overdue %}is-overdue{% elif task.is_due_soon %}is-due-soon{% endif %}">
+                    {% if task.deadline %}{{ task.deadline|date:"M d, Y" }}{% else %}No deadline{% endif %}
+                </span>)
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No tasks found in this category.</p>
+{% endif %}

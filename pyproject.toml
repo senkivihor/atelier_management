@@ -12,6 +12,8 @@ Django = "^5.0"
 psycopg2-binary = "^2.9" # PostgreSQL adapter
 python-dotenv = "^1.0" # For local environment variables
 django-environ = "^0.11.2" # Excellent for managing env vars in Django
+channels = "^4.0"
+channels_redis = "^4.3.0"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.20"
